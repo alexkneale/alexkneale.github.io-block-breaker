@@ -15,8 +15,11 @@ canvas {
 
 .overlay {
     position: absolute;
-    top: 0;
-    left: 0;
+    // top: 0;
+    // left: 0;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     width: 600px; // match canvas size
     height: 400px;
     background-color: rgba(0, 0, 0, 0.8);
