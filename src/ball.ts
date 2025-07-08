@@ -7,7 +7,7 @@ export class Ball {
     public x: number;
     public y: number;
     //dimensions
-    private radius: number;
+    public radius: number;
     // speed
     private speed: number;
     // angle
@@ -36,7 +36,8 @@ export class Ball {
         // set speed
         this.speed = 7;
         // random orientation
-        this.angle = Math.random() * 2 * Math.PI;
+        this.angle =
+            Math.random() * (1 / 3 - 1 / 6) * Math.PI + (Math.PI * 1) / 6;
         // velocity in each direction
         this.vx = this.speed * Math.cos(this.angle);
         this.vy = this.speed * Math.sin(this.angle);
