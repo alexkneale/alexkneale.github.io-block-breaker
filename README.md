@@ -37,6 +37,11 @@ We start with creating a basic version of block breaker
 
 Current Issues with Basic Version
 
+General
+
+-   [ ] ASK REMI ABOUT FORMAT OF TS (order of:
+        params, func declaration, class, const variables from doc)
+
 HTML
 
 -   [ ] Would be nice to have opening title page

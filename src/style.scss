@@ -12,3 +12,34 @@ canvas {
     border: 2px solid white;
     background-color: black;
 }
+
+.overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 600px; // match canvas size
+    height: 400px;
+    background-color: rgba(0, 0, 0, 0.8);
+    color: white;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    z-index: 10;
+
+    // class whose presence decides whether screen is visible or not
+    &.active {
+        display: flex;
+    }
+
+    button {
+        margin-top: 1rem;
+        padding: 0.5rem 1rem;
+        font-size: 1rem;
+        background: white;
+        color: black;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+}

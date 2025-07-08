@@ -79,6 +79,7 @@ const generateFilteredRandomArray = (
     return result;
 };
 
+// block parameters
 const countBlocks = 20;
 const blockHeight = 20;
 const blockWidth = 20;
@@ -116,10 +117,98 @@ for (const block of blocks) {
     block.draw();
 }
 
+// count of blocks eliminated - to determine when game won
 let blocksEliminated = 0;
 
+// boolean statements for game status
+let gameStarted = false;
+let gameOver = false;
+
+// screens and buttons for starting/restarting game
+const startScreen = document.getElementById("start-screen") as HTMLDivElement;
+const startButton = document.getElementById(
+    "start-button"
+) as HTMLButtonElement;
+
+const endScreen = document.getElementById("end-screen") as HTMLDivElement;
+const endMessage = document.getElementById("end-message") as HTMLHeadingElement;
+const restartButton = document.getElementById(
+    "restart-button"
+) as HTMLButtonElement;
+
+// event listeners for starting and restarting game
+
+startButton.addEventListener("click", () => {
+    // remove active class from start button element
+    // this will get rid of start button when game started
+    startScreen.classList.remove("active");
+    // change bools accordingly, so we loop through game
+    gameStarted = true;
+    gameOver = false;
+    gameLoop();
+});
+
+restartButton.addEventListener("click", () => {
+    // remove active class from restart button element
+    // this will get rid of restart button when game restarted
+    endScreen.classList.remove("active");
+    // reset game before restarting loop
+    resetGame();
+    gameLoop();
+});
+
+function resetGame() {
+    // function to reset paddle, ball, blocks etc
+
+    // reset logic for game having ended
+    gameOver = false;
+
+    // empty array of class instances
+    blocks.length = 0;
+
+    // restart count of blocks eliminated
+    blocksEliminated = 0;
+
+    // generate new coords for blocks
+    const newPositions = generateFilteredRandomArray(
+        countBlocks,
+        canvas.width,
+        canvas.height,
+        blockWidth,
+        blockHeight
+    );
+
+    // generate new instances of block classes, stored in blocks array
+    newPositions.forEach(([x, y]) =>
+        blocks.push(
+            new Block(
+                ctx,
+                canvas.width,
+                canvas.height,
+                blockHeight,
+                blockWidth,
+                x,
+                y
+            )
+        )
+    );
+
+    // reset ball and paddle
+    // object.assign allows us to reset, while keeping original variable names
+    Object.assign(ball, new Ball(ctx, canvas.width, canvas.height));
+    Object.assign(paddle, new Paddle(ctx, canvas.width, canvas.height));
+}
+
+// func for activating end screen pop up
+function showEndScreen(message: string) {
+    // change message depending on if user wins/loses
+    endMessage.textContent = message;
+    endScreen.classList.add("active");
+}
+
 function gameLoop() {
-    if (gameOver) return;
+    // wait for user to start game, or catch if game over
+    if (!gameStarted || gameOver) return;
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     // draw paddle
@@ -133,7 +222,7 @@ function gameLoop() {
     gameOver = ball.update(paddle);
 
     if (gameOver) {
-        alert("Game Over!");
+        showEndScreen("Game Over!");
         return;
     }
 
@@ -145,7 +234,7 @@ function gameLoop() {
         }
     }
     if (blocksEliminated === blocksGenerated) {
-        alert("Game Over!");
+        showEndScreen("You Win!");
         return;
     }
     // draw remaining blocks
@@ -155,7 +244,5 @@ function gameLoop() {
 
     requestAnimationFrame(gameLoop);
 }
-
-let gameOver = false;
 
 gameLoop(); // Start the loop
