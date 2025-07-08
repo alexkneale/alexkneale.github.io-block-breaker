@@ -32,11 +32,13 @@ export class Block {
 
     // function to check if ball has hit block
     public broken(ball: Ball): boolean {
-        const withinBlockX = ball.x >= this.x && ball.x <= this.x + this.width;
+        const withinBlockX =
+            ball.x + ball.radius >= this.x &&
+            ball.x - ball.radius <= this.x + this.width;
 
         const withinBlockY =
             ball.y + ball.radius >= this.y &&
-            ball.y + ball.radius <= this.y + this.height;
+            ball.y - ball.radius <= this.y + this.height;
 
         // check to see paddle collision
 

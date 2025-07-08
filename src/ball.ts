@@ -67,12 +67,15 @@ export class Ball {
         }
 
         // note paddle x and y are coords of top left corner of rectangle
+        // here we add radius, as otherwise ball would pass through
+        // two extremes of the paddle
         const withinPaddleX =
-            this.x >= paddle.x && this.x <= paddle.x + paddle.width;
+            this.x + this.radius >= paddle.x &&
+            this.x - this.radius <= paddle.x + paddle.width;
 
         const hittingPaddleY =
             this.y + this.radius >= paddle.y &&
-            this.y + this.radius <= paddle.y + paddle.height;
+            this.y - this.radius <= paddle.y + paddle.height;
 
         // check to see paddle collision
 
