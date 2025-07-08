@@ -9,16 +9,17 @@ import { Block } from "./block";
 // get canvas and context
 const canvas = document.getElementById("game-canvas") as HTMLCanvasElement;
 const ctx = canvas.getContext("2d");
+let ballSpeed = 7;
 
 if (!ctx) throw new Error("2D context not supported");
 
-//paddle
+// paddle
 
 const paddle = new Paddle(ctx, canvas.width, canvas.height);
 
 // ball
 
-const ball = new Ball(ctx, canvas.width, canvas.height);
+const ball = new Ball(ctx, canvas.width, canvas.height, ballSpeed);
 
 // blocks
 
@@ -80,9 +81,9 @@ const generateFilteredRandomArray = (
 };
 
 // block parameters
-const countBlocks = 20;
-const blockHeight = 20;
-const blockWidth = 20;
+const countBlocks = 10;
+const blockHeight = 40;
+const blockWidth = 40;
 
 const blockPositions = generateFilteredRandomArray(
     countBlocks,
@@ -160,7 +161,12 @@ restartButton.addEventListener("click", () => {
 function resetGame() {
     // function to reset paddle, ball, blocks etc
 
-    // reset logic for game having ended
+    // check if previous round was won
+    if (!gameOver) {
+        ballSpeed += 1;
+    }
+
+    // reset logic for game having been lost (in case it was)
     gameOver = false;
 
     // empty array of class instances
@@ -195,7 +201,7 @@ function resetGame() {
 
     // reset ball and paddle
     // object.assign allows us to reset, while keeping original variable names
-    Object.assign(ball, new Ball(ctx, canvas.width, canvas.height));
+    Object.assign(ball, new Ball(ctx, canvas.width, canvas.height, ballSpeed));
     Object.assign(paddle, new Paddle(ctx, canvas.width, canvas.height));
 }
 
@@ -218,7 +224,7 @@ function gameLoop() {
     // draw ball
     ball.draw();
 
-    // check for ball escaping
+    // check for ball escaping - losing condition
     gameOver = ball.update(paddle);
 
     if (gameOver) {
@@ -233,8 +239,10 @@ function gameLoop() {
             blocksEliminated++;
         }
     }
+    // check for winning condition
+
     if (blocksEliminated === blocksGenerated) {
-        showEndScreen("You Win!");
+        showEndScreen(`You Win! New Level ${ballSpeed - 5} Unlocked!`);
         return;
     }
     // draw remaining blocks

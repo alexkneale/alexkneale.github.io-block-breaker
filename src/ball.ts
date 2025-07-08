@@ -19,7 +19,8 @@ export class Ball {
     constructor(
         ctx: CanvasRenderingContext2D,
         canvasWidth: number,
-        canvasHeight: number
+        canvasHeight: number,
+        speed: number
     ) {
         this.ctx = ctx;
         this.canvasWidth = canvasWidth;
@@ -34,7 +35,7 @@ export class Ball {
         // place paddle 100 pixels above bottom
         this.y = 100;
         // set speed
-        this.speed = 7;
+        this.speed = speed;
         // random orientation
         this.angle =
             Math.random() * (1 / 3 - 1 / 6) * Math.PI + (Math.PI * 1) / 6;
