@@ -57,6 +57,9 @@ SCSS
 TS
 
 -   [x] Randomly generated angle can result in boring game if it causes ball trajectory to be too vertical. Change range of randomly generated angle
--   [ ] Include ball bouncing horizontally off side of blocks (ambitious)
+-   [x] Include ball bouncing horizontally off side of blocks (ambitious)
 -   [x] Look at ball contact range again (tiny inconsistencies spotted)
 -   [x] Have levels, with updated ball speed
+
+-   [ ] Have different bricks (some with multiple hits /explosions etc)
+-   [ ] Multiple balls
