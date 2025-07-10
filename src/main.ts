@@ -117,6 +117,7 @@ const resetGame = () => {
     // check if previous round was won
     if (!gameOver) {
         ballSpeed += 1;
+        paddle.speed += 1;
     }
 
     // reset logic for game having been lost (in case it was)

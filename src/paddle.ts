@@ -6,7 +6,7 @@ export class Paddle {
     public width: number;
     public height: number;
     // speed
-    private speed: number;
+    public speed: number;
     // logic variables for keyboard movement
     private movingLeft: boolean = false;
     private movingRight: boolean = false;

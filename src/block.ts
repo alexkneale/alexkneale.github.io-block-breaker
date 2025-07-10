@@ -7,7 +7,7 @@ export class Block {
     //dimensions
     public width: number;
     public height: number;
-
+    public hits: number;
     constructor(
         // have positions, heigh and width as inputs to constructor, to avoid overlap
         height: number,
@@ -15,6 +15,12 @@ export class Block {
         x: number,
         y: number
     ) {
+        const r: number = Math.random();
+
+        if (r < 0.5) this.hits = 1; // 50% chance
+        else if (r < 0.8) this.hits = 2; // next 30% (0.5 to 0.8)
+        else this.hits = 3;
+
         // set fixed height and width
         this.width = height;
         this.height = width;
@@ -60,25 +66,39 @@ export class Block {
             switch (minOverlap) {
                 case overlapLeft:
                     ball.vx = -Math.abs(ball.vx);
-                    return true;
+                    // decrease hits and check if hits = 0 (block destroyed)
+                    this.hits -= 1;
+                    return !this.hits ? true : false;
                 case overlapRight:
                     ball.vx = Math.abs(ball.vx);
-                    return true;
+                    this.hits -= 1;
+                    return !this.hits ? true : false;
                 case overlapTop:
                     ball.vy = -Math.abs(ball.vy);
-                    return true;
+                    this.hits -= 1;
+                    return !this.hits ? true : false;
+
                 case overlapBottom:
                     ball.vy = Math.abs(ball.vy);
-                    return true;
+                    this.hits -= 1;
+                    return !this.hits ? true : false;
+
                 default:
-                    return false;
+                    return true;
             }
         }
         return false;
     }
 
     public draw(ctx: CanvasRenderingContext2D) {
-        ctx.fillStyle = "blue";
+        if (this.hits === 3) {
+            ctx.fillStyle = "blue";
+        } else if (this.hits === 2) {
+            ctx.fillStyle = "purple";
+        } else {
+            ctx.fillStyle = "yellow";
+        }
+
         ctx.fillRect(this.x, this.y, this.width, this.height);
     }
 }
