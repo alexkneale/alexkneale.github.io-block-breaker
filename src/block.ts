@@ -1,8 +1,6 @@
+import type { Ball } from "./ball";
+
 export class Block {
-    // canvas properties
-    private ctx: CanvasRenderingContext2D;
-    private canvasWidth: number;
-    private canvasHeight: number;
     // position
     public x: number;
     public y: number;
@@ -11,18 +9,12 @@ export class Block {
     public height: number;
 
     constructor(
-        ctx: CanvasRenderingContext2D,
-        canvasWidth: number,
-        canvasHeight: number,
         // have positions, heigh and width as inputs to constructor, to avoid overlap
         height: number,
         width: number,
         x: number,
         y: number
     ) {
-        this.ctx = ctx;
-        this.canvasWidth = canvasWidth;
-        this.canvasHeight = canvasHeight;
         // set fixed height and width
         this.width = height;
         this.height = width;
@@ -78,12 +70,15 @@ export class Block {
                 case overlapBottom:
                     ball.vy = Math.abs(ball.vy);
                     return true;
+                default:
+                    return false;
             }
         }
+        return false;
     }
 
-    public draw() {
-        this.ctx.fillStyle = "blue";
-        this.ctx.fillRect(this.x, this.y, this.width, this.height);
+    public draw(ctx: CanvasRenderingContext2D) {
+        ctx.fillStyle = "blue";
+        ctx.fillRect(this.x, this.y, this.width, this.height);
     }
 }

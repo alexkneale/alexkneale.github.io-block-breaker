@@ -60,6 +60,5 @@ TS
 -   [x] Include ball bouncing horizontally off side of blocks (ambitious)
 -   [x] Look at ball contact range again (tiny inconsistencies spotted)
 -   [x] Have levels, with updated ball speed
-
 -   [ ] Have different bricks (some with multiple hits /explosions etc)
 -   [ ] Multiple balls

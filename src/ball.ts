@@ -1,15 +1,13 @@
+import type { Paddle } from "./paddle";
+
 export class Ball {
-    // canvas properties
-    private ctx: CanvasRenderingContext2D;
-    private canvasWidth: number;
-    private canvasHeight: number;
     // position
     public x: number;
     public y: number;
     //dimensions
     public radius: number;
     // speed
-    private speed: number;
+    public speed: number;
     // angle
     public angle: number;
     // speed in each direction
@@ -17,14 +15,14 @@ export class Ball {
     public vy: number;
 
     constructor(
-        ctx: CanvasRenderingContext2D,
+        // ctx: CanvasRenderingContext2D,
         canvasWidth: number,
-        canvasHeight: number,
+        // canvasHeight: number,
         speed: number
     ) {
-        this.ctx = ctx;
-        this.canvasWidth = canvasWidth;
-        this.canvasHeight = canvasHeight;
+        // this.ctx = ctx;
+        // this.canvasWidth = canvasWidth;
+        // this.canvasHeight = canvasHeight;
 
         // radius
         this.radius = 4;
@@ -44,8 +42,11 @@ export class Ball {
         this.vy = this.speed * Math.sin(this.angle);
     }
 
-    // move right/left when key pressed and within range
-    public update(paddle: Paddle): boolean {
+    public update(
+        paddle: Paddle,
+        canvasHeight: number,
+        canvasWidth: number
+    ): boolean {
         // move ball
         this.x += this.vx;
         this.y += this.vy;
@@ -54,10 +55,7 @@ export class Ball {
         // handle x and y separately
 
         //x, wall collision (right/left)
-        if (
-            this.x + this.radius >= this.canvasWidth ||
-            this.x - this.radius <= 0
-        ) {
+        if (this.x + this.radius >= canvasWidth || this.x - this.radius <= 0) {
             this.vx = -this.vx;
         }
 
@@ -85,18 +83,18 @@ export class Ball {
         }
 
         // Game over: ball below bottom
-        if (this.y - this.radius > this.canvasHeight) {
+        if (this.y - this.radius > canvasHeight) {
             return true; // game over
         }
 
         return false;
     }
 
-    public draw() {
-        this.ctx.beginPath();
-        this.ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-        this.ctx.fillStyle = "red";
-        this.ctx.fill();
-        this.ctx.closePath();
+    public draw(ctx: CanvasRenderingContext2D) {
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+        ctx.fillStyle = "red";
+        ctx.fill();
+        ctx.closePath();
     }
 }
