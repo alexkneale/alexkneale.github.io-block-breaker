@@ -4,7 +4,7 @@ import "./style.scss";
 import { Paddle } from "./paddle";
 import { Ball } from "./ball";
 import { Block } from "./block";
-
+import { Explosion } from "./explosion";
 //// START GAME CONDITIONS
 
 //// Elements capture
@@ -27,6 +27,9 @@ const restartButton = document.getElementById(
 
 //// global variables (let ...)
 
+// array to store explosions
+const explosions: Explosion[] = [];
+
 // initial ball speed
 let ballSpeed = 7;
 
@@ -38,8 +41,10 @@ const countBlocks = 10;
 const blockHeight = 40;
 const blockWidth = 40;
 
+// explosive block radius
+const explosiveRadius = 150;
+
 // count of blocks eliminated - to determine when game won
-let blocksEliminated = 0;
 
 // boolean statements for game status
 let gameStarted = false;
@@ -156,6 +161,19 @@ const showEndScreen = (message: string) => {
     endScreen.classList.add("active");
 };
 
+const blockCentreDistance = (block1: Block, block2: Block): number => {
+    return Math.sqrt((block1.x - block2.x) ** 2 + (block1.y - block2.y) ** 2);
+};
+
+const brickInExplosionRange = (
+    blocks: Block[],
+    explosiveBlock: Block
+): Block[] => {
+    return blocks.filter(
+        (block) => blockCentreDistance(block, explosiveBlock) > explosiveRadius
+    );
+};
+
 const gameLoop = () => {
     // wait for user to start game, or catch if game over
     if (!gameStarted || gameOver) return;
@@ -179,19 +197,43 @@ const gameLoop = () => {
     // check for block being destroyed
     for (let i = blocks.length - 1; i >= 0; i--) {
         if (blocks[i].broken(ball)) {
-            blocks.splice(i, 1); // remove the block
-            blocksEliminated++;
+            if (blocks[i].explosive) {
+                const explosiveBlock = blocks[i];
+                // explosion animation
+                explosions.push(
+                    new Explosion(
+                        blocks[i].x + blocks[i].width / 2,
+                        blocks[i].y + blocks[i].height / 2,
+                        explosiveRadius
+                    )
+                );
+
+                // find and remove exploded bricks (including explosive brick)
+                blocks = brickInExplosionRange(blocks, explosiveBlock);
+                blocksEliminated = blocksGenerated - blocks.length;
+            } else {
+                blocks.splice(i, 1); // remove the block
+                blocksEliminated = blocksGenerated - blocks.length;
+            }
         }
     }
     // check for winning condition
 
-    if (blocksEliminated === blocksGenerated) {
+    if (blocks.length === 0) {
         showEndScreen(`You Win! New Level ${ballSpeed - 5} Unlocked!`);
         return;
     }
     // draw remaining blocks
     for (const block of blocks) {
         block.draw(ctx);
+    }
+    for (let i = explosions.length - 1; i >= 0; i--) {
+        const active = explosions[i].update();
+        if (!active) {
+            explosions.splice(i, 1); // remove finished explosions
+        } else {
+            explosions[i].draw(ctx);
+        }
     }
 
     requestAnimationFrame(gameLoop);
@@ -261,9 +303,10 @@ if (!blockPositions) {
 
 // count number of blocks generated
 const blocksGenerated = blockPositions.length;
+let blocksEliminated = 0;
 
 // array of blocks
-const blocks: Block[] = blockPositions.map(
+let blocks: Block[] = blockPositions.map(
     ([x, y]) => new Block(blockHeight, blockWidth, x, y)
 );
 

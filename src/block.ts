@@ -8,6 +8,7 @@ export class Block {
     public width: number;
     public height: number;
     public hits: number;
+    public explosive: boolean;
     constructor(
         // have positions, heigh and width as inputs to constructor, to avoid overlap
         height: number,
@@ -16,10 +17,23 @@ export class Block {
         y: number
     ) {
         const r: number = Math.random();
-
-        if (r < 0.5) this.hits = 1; // 50% chance
-        else if (r < 0.8) this.hits = 2; // next 30% (0.5 to 0.8)
-        else this.hits = 3;
+        // 50% chance
+        if (r < 0.5) {
+            this.hits = 1;
+            this.explosive = false;
+        } // next 30% chance (0.5 to 0.8)
+        else if (r < 0.8) {
+            this.hits = 2;
+            this.explosive = false;
+        } // next 10% chance (0.8 to 0.9)
+        else if (r < 0.9) {
+            this.hits = 3;
+            this.explosive = false;
+        } else {
+            // next 10% chance (0.9 to 1.0)
+            this.hits = 1;
+            this.explosive = true;
+        }
 
         // set fixed height and width
         this.width = height;
@@ -91,7 +105,9 @@ export class Block {
     }
 
     public draw(ctx: CanvasRenderingContext2D) {
-        if (this.hits === 3) {
+        if (this.explosive) {
+            ctx.fillStyle = "white";
+        } else if (this.hits === 3) {
             ctx.fillStyle = "blue";
         } else if (this.hits === 2) {
             ctx.fillStyle = "purple";
