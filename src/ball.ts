@@ -17,7 +17,7 @@ export class Ball {
     constructor(
         // ctx: CanvasRenderingContext2D,
         canvasWidth: number,
-        // canvasHeight: number,
+        canvasHeight: number,
         speed: number
     ) {
         // this.ctx = ctx;
@@ -30,8 +30,8 @@ export class Ball {
         // place circle in middle (horizontally)
         // x is centre of circle
         this.x = canvasWidth / 2 - this.radius;
-        // place paddle 100 pixels above bottom
-        this.y = 100;
+        // place ball 100 pixels above bottom
+        this.y = 0.1 * canvasHeight;
         // set speed
         this.speed = speed;
         // random orientation
@@ -39,7 +39,7 @@ export class Ball {
             Math.random() * (1 / 3 - 1 / 6) * Math.PI + (Math.PI * 1) / 6;
         // velocity in each direction
         this.vx = this.speed * Math.cos(this.angle);
-        this.vy = this.speed * Math.sin(this.angle);
+        this.vy = -this.speed * Math.sin(this.angle);
     }
 
     public update(

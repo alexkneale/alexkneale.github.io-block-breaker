@@ -37,12 +37,11 @@ let ballSpeed = 7;
 type Pair = [number, number];
 
 // block parameters
-const countBlocks = 10;
-const blockHeight = 40;
-const blockWidth = 40;
+
+const countBlocks = 20;
 
 // explosive block radius
-const explosiveRadius = 150;
+//const explosiveRadius = 150;
 
 // count of blocks eliminated - to determine when game won
 
@@ -51,6 +50,15 @@ let gameStarted = false;
 let gameOver = false;
 
 //// function declarations
+
+// function to ensure sizing of canvas is flexible
+const resizeCanvas = () => {
+    // Set width to 75% of the current viewport width
+    canvas.width = window.innerWidth * 0.75;
+
+    // Optional: Set height proportionally, or as fixed value
+    canvas.height = window.innerHeight * 0.75;
+};
 
 // function for checking two blocks aren't overlapping
 const isTooClose = (
@@ -91,7 +99,7 @@ const generateFilteredRandomArray = (
         // generate potential block coord
         const candidate: Pair = [
             getRandomInRange(width, canvasWidth - width),
-            getRandomInRange(0, canvasHeight - 150),
+            getRandomInRange(0, 0.75 * canvasHeight),
         ];
 
         // check for overlap before pushing
@@ -139,18 +147,18 @@ const resetGame = () => {
         countBlocks,
         canvas.width,
         canvas.height,
-        blockWidth,
-        blockHeight
+        canvas.width * 0.05,
+        canvas.width * 0.05
     );
 
     // generate new instances of block classes, stored in blocks array
     newPositions.forEach(([x, y]) =>
-        blocks.push(new Block(blockHeight, blockWidth, x, y))
+        blocks.push(new Block(canvas.width, x, y))
     );
 
     // reset ball and paddle
     // object.assign allows us to reset, while keeping original variable names
-    Object.assign(ball, new Ball(canvas.width, ballSpeed));
+    Object.assign(ball, new Ball(canvas.width, canvas.height, ballSpeed));
     Object.assign(paddle, new Paddle(canvas.width, canvas.height));
 };
 
@@ -170,15 +178,18 @@ const brickInExplosionRange = (
     explosiveBlock: Block
 ): Block[] => {
     return blocks.filter(
-        (block) => blockCentreDistance(block, explosiveBlock) > explosiveRadius
+        (block) =>
+            blockCentreDistance(block, explosiveBlock) >
+            explosiveBlock.width * 3
     );
 };
 
 const gameLoop = () => {
     // wait for user to start game, or catch if game over
-    if (!gameStarted || gameOver) return;
+    if (!gameStarted) return;
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
+
     // draw paddle
     paddle.update(canvas.width);
     paddle.draw(ctx);
@@ -202,9 +213,9 @@ const gameLoop = () => {
                 // explosion animation
                 explosions.push(
                     new Explosion(
-                        blocks[i].x + blocks[i].width / 2,
-                        blocks[i].y + blocks[i].height / 2,
-                        explosiveRadius
+                        explosiveBlock.x + explosiveBlock.width / 2,
+                        explosiveBlock.y + explosiveBlock.height / 2,
+                        explosiveBlock.width * 3
                     )
                 );
 
@@ -242,6 +253,8 @@ const gameLoop = () => {
 //// DOM manipulation (eventlisteners)
 
 // event listeners for starting and restarting game
+
+window.addEventListener("resize", resizeCanvas);
 
 startButton.addEventListener("click", () => {
     // remove active class from start button element
@@ -281,11 +294,14 @@ document.addEventListener("keyup", (e) => {
 
 //// Initialising game
 
+// initial resizing
+resizeCanvas();
+
 // paddle
 const paddle = new Paddle(canvas.width, canvas.height);
 
 // ball
-const ball = new Ball(canvas.width, ballSpeed);
+const ball = new Ball(canvas.width, canvas.height, ballSpeed);
 
 // block
 // array of block positions
@@ -293,8 +309,8 @@ const blockPositions = generateFilteredRandomArray(
     countBlocks,
     canvas.width,
     canvas.height,
-    blockHeight,
-    blockWidth
+    canvas.width * 0.05,
+    canvas.width * 0.05
 );
 
 if (!blockPositions) {
@@ -307,7 +323,7 @@ let blocksEliminated = 0;
 
 // array of blocks
 let blocks: Block[] = blockPositions.map(
-    ([x, y]) => new Block(blockHeight, blockWidth, x, y)
+    ([x, y]) => new Block(canvas.width, x, y)
 );
 
 // drawing each block

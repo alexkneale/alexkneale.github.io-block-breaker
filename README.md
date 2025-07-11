@@ -2,7 +2,7 @@
 
 ## Basic
 
-We start with creating a basic version of block breaker
+We start with creating a basic version of block breaker. Here is our plan for basic version (06/07/2025)
 
 ### HTML
 
@@ -35,18 +35,14 @@ We start with creating a basic version of block breaker
 -   Pop up to restart game
     -   [x] Popup, with option to play again
 
-Current Issues with Basic Version
+Improvements to Basic Version (09/07/2025)
 
 General
-
--   [ ] ASK REMI ABOUT FORMAT OF TS (order of:
-        params, func declaration, class, const variables from doc)
 
 HTML
 
 -   [x] Would be nice to have opening title page
 -   [x] Would be nice to have start button (less abrupt start)
--   [ ] Would be nice to display blocks destroyed on side (or levels, if we decide to do that)
 -   [x] Would be nice to have game over pop up, and restart option
 
 SCSS
@@ -60,5 +56,25 @@ TS
 -   [x] Include ball bouncing horizontally off side of blocks (ambitious)
 -   [x] Look at ball contact range again (tiny inconsistencies spotted)
 -   [x] Have levels, with updated ball speed
--   [ ] Have different bricks (some with multiple hits /explosions etc)
--   [ ] Multiple balls
+-   [x] Have different bricks (some with multiple hits /explosions etc)
+
+Final things to add
+
+HTML
+
+-   [ ] Display blocks destroyed in round, and current level
+-   [ ] Have block lives 'library' on side, displaying how many times you need to hit each brick type before they go away
+-   [ ] On start screen, have brief description of which controls to use (arrows or A/D or touchscreen arrows)
+
+SCSS
+
+-   [ ] Add space theme to background
+-   [ ] Improve designs of blocks, ball and paddle. Something more visually appealing
+-   [ ] Sounds when bricks destroyed, explosion sounds when explosive bricks destroyed
+-   [ ] Encouraging messages when x blocks destroyed
+-   [ ] Messages about speed everytime you level up
+
+TS
+
+-   [ ] Touchscreen?
+-   [ ] Multiple Balls extension? (potentially)

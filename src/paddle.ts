@@ -12,14 +12,13 @@ export class Paddle {
     private movingRight: boolean = false;
 
     constructor(canvasWidth: number, canvasHeight: number) {
-        // set fixed height and width
-        this.width = 150;
-        this.height = 20;
+        // set flexible width, but fixed height
+        this.width = canvasWidth * 0.25;
+        this.height = 15;
         // plave paddle in middle (horizontally)
-        // x is midpoint in paddle
         this.x = (canvasWidth - this.width) / 2;
-        // place paddle 30 pixels above bottom
-        this.y = canvasHeight - this.height - 30;
+        // place paddle at 0.9 height down pixels above bottom
+        this.y = 0.9 * canvasHeight;
         // set speed
         this.speed = 7;
     }

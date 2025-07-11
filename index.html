@@ -4,14 +4,26 @@
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>Block Breaker</title>
+        <link
+            href="https://fonts.googleapis.com/css2?family=Orbitron&display=swap"
+            rel="stylesheet"
+        />
     </head>
     <body>
         <div id="start-screen" class="overlay overlay__start active">
             <h1>Block Breaker</h1>
-            <button id="start-button">Start Game</button>
+            <button id="start-button" class="overlay__start--button">
+                Start Game
+            </button>
+            <h3 class="overlay__start--instructions">
+                Use <span class="key">←</span> <span class="key">→</span> or
+                <span class="key">A</span> <span class="key">D</span> to move
+                <br />
+                or use buttons provided.
+            </h3>
         </div>
 
-        <canvas id="game-canvas" width="800" height="600"></canvas>
+        <canvas id="game-canvas"></canvas>
 
         <div id="end-screen" class="overlay overlay__end">
             <h2 id="end-message"></h2>

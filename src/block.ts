@@ -11,8 +11,7 @@ export class Block {
     public explosive: boolean;
     constructor(
         // have positions, heigh and width as inputs to constructor, to avoid overlap
-        height: number,
-        width: number,
+        canvasWidth: number,
         x: number,
         y: number
     ) {
@@ -36,8 +35,8 @@ export class Block {
         }
 
         // set fixed height and width
-        this.width = height;
-        this.height = width;
+        this.width = canvasWidth * 0.05;
+        this.height = this.width;
         this.x = x;
         this.y = y;
     }
