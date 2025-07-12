@@ -62,14 +62,14 @@ Final things to add
 
 HTML
 
--   [ ] Display blocks destroyed in round, and current level
--   [ ] Have block lives 'library' on side, displaying how many times you need to hit each brick type before they go away
--   [ ] On start screen, have brief description of which controls to use (arrows or A/D or touchscreen arrows)
+-   [x] Display blocks destroyed in round, and current level
+-   [x] Have block lives 'library' on side, displaying how many times you need to hit each brick type before they go away
+-   [x] On start screen, have brief description of which controls to use (arrows or A/D or touchscreen arrows)
 
 SCSS
 
--   [ ] Add space theme to background
--   [ ] Improve designs of blocks, ball and paddle. Something more visually appealing
+-   [x] Add space theme to background
+-   [x] Improve designs of blocks, ball and paddle. Something more visually appealing
 -   [ ] Sounds when bricks destroyed, explosion sounds when explosive bricks destroyed
 -   [ ] Encouraging messages when x blocks destroyed
 -   [ ] Messages about speed everytime you level up

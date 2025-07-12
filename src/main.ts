@@ -25,13 +25,19 @@ const restartButton = document.getElementById(
     "restart-button"
 ) as HTMLButtonElement;
 
+const levelDisplay = document.getElementById("level-display")!;
+const scoreDisplay = document.getElementById("score-display")!;
+
 //// global variables (let ...)
 
 // array to store explosions
 const explosions: Explosion[] = [];
 
 // initial ball speed
-let ballSpeed = 7;
+let ballSpeed: number;
+
+//initial level
+let level = 1;
 
 // define type pair
 type Pair = [number, number];
@@ -51,6 +57,24 @@ let gameOver = false;
 
 //// function declarations
 
+// function to update ball speed depending on screen size
+const ballSpeedUpdater = (canvasHeight: number): number => {
+    // small screen case
+    if (canvasHeight < 700) {
+        return 6;
+    } else if (canvasHeight < 900) {
+        return 7;
+    } else if (canvasHeight < 1100) {
+        return 9;
+    } else {
+        return 10;
+    }
+
+    // medium screen size
+
+    // large screen size
+};
+
 // function to ensure sizing of canvas is flexible
 const resizeCanvas = () => {
     // Set width to 75% of the current viewport width
@@ -58,6 +82,12 @@ const resizeCanvas = () => {
 
     // Optional: Set height proportionally, or as fixed value
     canvas.height = window.innerHeight * 0.75;
+};
+
+// function for updating HUD
+const updateHUD = () => {
+    levelDisplay.textContent = `Level: ${level}`; // Or your preferred level logic
+    scoreDisplay.textContent = `Blocks Destroyed: ${blocksEliminated}`;
 };
 
 // function for checking two blocks aren't overlapping
@@ -129,8 +159,7 @@ const resetGame = () => {
 
     // check if previous round was won
     if (!gameOver) {
-        ballSpeed += 1;
-        paddle.speed += 1;
+        ballSpeed += 2;
     }
 
     // reset logic for game having been lost (in case it was)
@@ -159,7 +188,7 @@ const resetGame = () => {
     // reset ball and paddle
     // object.assign allows us to reset, while keeping original variable names
     Object.assign(ball, new Ball(canvas.width, canvas.height, ballSpeed));
-    Object.assign(paddle, new Paddle(canvas.width, canvas.height));
+    Object.assign(paddle, new Paddle(canvas.width, canvas.height, ballSpeed));
 };
 
 // func for activating end screen pop up
@@ -220,7 +249,6 @@ const gameLoop = () => {
                 );
 
                 // find and remove exploded bricks (including explosive brick)
-                // Find and remove exploded bricks (including itself)
                 for (let j = blocks.length - 1; j >= 0; j--) {
                     const distance = blockCentreDistance(
                         blocks[j],
@@ -232,22 +260,21 @@ const gameLoop = () => {
                 }
 
                 blocksEliminated = blocksGenerated - blocks.length;
+                updateHUD();
                 break; // Important! Prevent double mutation in this loop
             } else {
                 blocks.splice(i, 1); // remove the block
                 blocksEliminated = blocksGenerated - blocks.length;
+                updateHUD();
             }
         }
     }
     // check for winning condition
 
     if (blocks.length === 0) {
-        showEndScreen(`You Win! New Level ${ballSpeed - 5} Unlocked!`);
+        level += 1;
+        showEndScreen(`You Win! New Level ${level} Unlocked!`);
         return;
-    }
-    // draw remaining blocks
-    for (const block of blocks) {
-        block.draw(ctx);
     }
     for (let i = explosions.length - 1; i >= 0; i--) {
         const active = explosions[i].update();
@@ -257,6 +284,10 @@ const gameLoop = () => {
             explosions[i].draw(ctx);
         }
     }
+    // draw remaining blocks
+    for (const block of blocks) {
+        block.draw(ctx);
+    }
 
     requestAnimationFrame(gameLoop);
 };
@@ -265,7 +296,7 @@ const gameLoop = () => {
 
 // event listeners for starting and restarting game
 
-window.addEventListener("resize", resizeCanvas);
+window.addEventListener("resize", resizeCanvas());
 
 startButton.addEventListener("click", () => {
     // remove active class from start button element
@@ -283,6 +314,7 @@ restartButton.addEventListener("click", () => {
     endScreen.classList.remove("active");
     // reset game before restarting loop
     resetGame();
+    updateHUD();
     gameLoop();
 });
 
@@ -308,8 +340,9 @@ document.addEventListener("keyup", (e) => {
 // initial resizing
 resizeCanvas();
 
+ballSpeed = ballSpeedUpdater(canvas.height);
 // paddle
-const paddle = new Paddle(canvas.width, canvas.height);
+const paddle = new Paddle(canvas.width, canvas.height, ballSpeed);
 
 // ball
 const ball = new Ball(canvas.width, canvas.height, ballSpeed);

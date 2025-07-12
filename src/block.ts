@@ -104,15 +104,53 @@ export class Block {
     }
 
     public draw(ctx: CanvasRenderingContext2D) {
+        let gradient: CanvasGradient;
+
         if (this.explosive) {
-            ctx.fillStyle = "white";
+            gradient = ctx.createLinearGradient(
+                this.x,
+                this.y,
+                this.x,
+                this.y + this.height
+            );
+            gradient.addColorStop(0, "#ff4d4d"); // bright red
+            gradient.addColorStop(1, "#ff9900"); // orange
+            ctx.shadowColor = "#FFFFFF"; // white glow
+            ctx.shadowColor = Math.random() > 0.5 ? "#ff0000" : "#ffa500";
         } else if (this.hits === 3) {
-            ctx.fillStyle = "blue";
+            gradient = ctx.createLinearGradient(
+                this.x,
+                this.y,
+                this.x,
+                this.y + this.height
+            );
+            gradient.addColorStop(0, "#6a0dad"); // purple
+            gradient.addColorStop(1, "#8a2be2"); // blue-violet
+            ctx.shadowColor = "#FF8C00"; // orange glow
         } else if (this.hits === 2) {
-            ctx.fillStyle = "purple";
+            gradient = ctx.createLinearGradient(
+                this.x,
+                this.y,
+                this.x,
+                this.y + this.height
+            );
+            gradient.addColorStop(0, "#1e90ff"); // dodger blue
+            gradient.addColorStop(1, "#00ced1"); // dark turquoise
+            ctx.shadowColor = "#8A2BE2"; // violet glow
         } else {
-            ctx.fillStyle = "yellow";
+            gradient = ctx.createLinearGradient(
+                this.x,
+                this.y,
+                this.x,
+                this.y + this.height
+            );
+            gradient.addColorStop(0, "#7fff00"); // chartreuse
+            gradient.addColorStop(1, "#00ff7f"); // spring green
+            ctx.shadowColor = "#3B9C9C"; // cyan glow
         }
+
+        ctx.fillStyle = gradient;
+        ctx.shadowBlur = 12;
 
         ctx.fillRect(this.x, this.y, this.width, this.height);
     }

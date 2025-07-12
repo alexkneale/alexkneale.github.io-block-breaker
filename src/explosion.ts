@@ -3,9 +3,9 @@ export class Explosion {
     private y: number;
     private maxRadius: number;
     private currentRadius: number = 0;
-    private expansionRate: number = 2;
+    private expansionRate: number = 7;
     private opacity: number = 1;
-    private fadeRate: number = 0.02;
+    private fadeRate: number = 0.001;
 
     constructor(x: number, y: number, maxRadius: number) {
         this.x = x;

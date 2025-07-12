@@ -11,7 +11,7 @@ export class Paddle {
     private movingLeft: boolean = false;
     private movingRight: boolean = false;
 
-    constructor(canvasWidth: number, canvasHeight: number) {
+    constructor(canvasWidth: number, canvasHeight: number, speed: number) {
         // set flexible width, but fixed height
         this.width = canvasWidth * 0.25;
         this.height = 15;
@@ -20,7 +20,7 @@ export class Paddle {
         // place paddle at 0.9 height down pixels above bottom
         this.y = 0.9 * canvasHeight;
         // set speed
-        this.speed = 7;
+        this.speed = speed;
     }
 
     public update(canvasWidth: number) {

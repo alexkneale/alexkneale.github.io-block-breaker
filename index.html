@@ -19,11 +19,33 @@
                 Use <span class="key">←</span> <span class="key">→</span> or
                 <span class="key">A</span> <span class="key">D</span> to move
                 <br />
-                or use buttons provided.
             </h3>
         </div>
 
+        <div id="hud">
+            <div id="level-display">Level: 1</div>
+            <div id="score-display">Blocks Destroyed: 0</div>
+        </div>
+
         <canvas id="game-canvas"></canvas>
+        <div id="block-legend">
+            <div class="legend-item">
+                <div class="block-preview block-3"></div>
+                <span>3 Hits</span>
+            </div>
+            <div class="legend-item">
+                <div class="block-preview block-2"></div>
+                <span>2 Hits</span>
+            </div>
+            <div class="legend-item">
+                <div class="block-preview block-1"></div>
+                <span>1 Hit</span>
+            </div>
+            <div class="legend-item">
+                <div class="block-preview block-explosive"></div>
+                <span>💥</span>
+            </div>
+        </div>
 
         <div id="end-screen" class="overlay overlay__end">
             <h2 id="end-message"></h2>
