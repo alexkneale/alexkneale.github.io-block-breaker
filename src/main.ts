@@ -173,16 +173,16 @@ const blockCentreDistance = (block1: Block, block2: Block): number => {
     return Math.sqrt((block1.x - block2.x) ** 2 + (block1.y - block2.y) ** 2);
 };
 
-const brickInExplosionRange = (
-    blocks: Block[],
-    explosiveBlock: Block
-): Block[] => {
-    return blocks.filter(
-        (block) =>
-            blockCentreDistance(block, explosiveBlock) >
-            explosiveBlock.width * 3
-    );
-};
+// const brickInExplosionRange = (
+//     blocks: Block[],
+//     explosiveBlock: Block
+// ): Block[] => {
+//     return blocks.filter(
+//         (block) =>
+//             blockCentreDistance(block, explosiveBlock) >
+//             explosiveBlock.width * 3
+//     );
+// };
 
 const gameLoop = () => {
     // wait for user to start game, or catch if game over
@@ -220,8 +220,19 @@ const gameLoop = () => {
                 );
 
                 // find and remove exploded bricks (including explosive brick)
-                blocks = brickInExplosionRange(blocks, explosiveBlock);
+                // Find and remove exploded bricks (including itself)
+                for (let j = blocks.length - 1; j >= 0; j--) {
+                    const distance = blockCentreDistance(
+                        blocks[j],
+                        explosiveBlock
+                    );
+                    if (distance < explosiveBlock.width * 3) {
+                        blocks.splice(j, 1);
+                    }
+                }
+
                 blocksEliminated = blocksGenerated - blocks.length;
+                break; // Important! Prevent double mutation in this loop
             } else {
                 blocks.splice(i, 1); // remove the block
                 blocksEliminated = blocksGenerated - blocks.length;
@@ -322,7 +333,7 @@ const blocksGenerated = blockPositions.length;
 let blocksEliminated = 0;
 
 // array of blocks
-let blocks: Block[] = blockPositions.map(
+const blocks: Block[] = blockPositions.map(
     ([x, y]) => new Block(canvas.width, x, y)
 );
 
