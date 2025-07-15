@@ -4,17 +4,23 @@
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>Block Breaker</title>
+        <!-- add google font link for alien font -->
         <link
             href="https://fonts.googleapis.com/css2?family=Orbitron&display=swap"
             rel="stylesheet"
         />
     </head>
     <body>
+        <!-- div for containing start game screen (with instructions) start game button -->
+
         <div id="start-screen" class="overlay overlay__start active">
+            <!-- Title -->
             <h1>Block Breaker</h1>
+            <!-- start game button -->
             <button id="start-button" class="overlay__start--button">
                 Start Game
             </button>
+            <!-- instructions for playing game -->
             <h3 class="overlay__start--instructions">
                 Use <span class="key">←</span> <span class="key">→</span> or
                 <span class="key">A</span> <span class="key">D</span> to move
@@ -22,27 +28,30 @@
             </h3>
         </div>
 
+        <!-- HUD (heads up display, with level and blocks destroyed) -->
         <div id="hud">
             <div id="level-display">Level: 1</div>
             <div id="score-display">Blocks Destroyed: 0</div>
         </div>
-
+        <!-- canvas element with game -->
         <canvas id="game-canvas"></canvas>
+
+        <!-- block type legend (hits and explosivity) -->
         <div id="block-legend">
-            <div class="legend-item">
-                <div class="block-preview block-3"></div>
+            <div class="item">
+                <div class="item__block item__block--3"></div>
                 <span>3 Hits</span>
             </div>
-            <div class="legend-item">
-                <div class="block-preview block-2"></div>
+            <div class="item">
+                <div class="item__block item__block--2"></div>
                 <span>2 Hits</span>
             </div>
-            <div class="legend-item">
-                <div class="block-preview block-1"></div>
+            <div class="item">
+                <div class="item__block item__block--1"></div>
                 <span>1 Hit</span>
             </div>
-            <div class="legend-item">
-                <div class="block-preview block-explosive"></div>
+            <div class="item">
+                <div class="item__block item__block--explosive"></div>
                 <span>💥</span>
             </div>
         </div>

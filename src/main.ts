@@ -2,12 +2,17 @@ import "./style.scss";
 
 // modules
 import { Paddle } from "./paddle";
-import { Ball } from "./ball";
-import { Block } from "./block";
-import { Explosion } from "./explosion";
-//// START GAME CONDITIONS
+import { Ball, ballSpeedUpdater } from "./ball";
+import {
+    Block,
+    isTooClose,
+    generateFilteredRandomArray,
+    getRandomInRange,
+} from "./block";
+import { Explosion, blockCentreDistance } from "./explosion";
 
-//// Elements capture
+//// Global Variables
+
 // get canvas and context
 const canvas = document.getElementById("game-canvas") as HTMLCanvasElement;
 const ctx = canvas.getContext("2d");
@@ -25,10 +30,10 @@ const restartButton = document.getElementById(
     "restart-button"
 ) as HTMLButtonElement;
 
+// levels and blocks destroyed (score) display
+
 const levelDisplay = document.getElementById("level-display")!;
 const scoreDisplay = document.getElementById("score-display")!;
-
-//// global variables (let ...)
 
 // array to store explosions
 const explosions: Explosion[] = [];
@@ -39,17 +44,9 @@ let ballSpeed: number;
 //initial level
 let level = 1;
 
-// define type pair
-type Pair = [number, number];
-
 // block parameters
 
 const countBlocks = 20;
-
-// explosive block radius
-//const explosiveRadius = 150;
-
-// count of blocks eliminated - to determine when game won
 
 // boolean statements for game status
 let gameStarted = false;
@@ -57,112 +54,28 @@ let gameOver = false;
 
 //// function declarations
 
-// function to update ball speed depending on screen size
-const ballSpeedUpdater = (canvasHeight: number): number => {
-    // small screen case
-    if (canvasHeight < 700) {
-        return 6;
-    } else if (canvasHeight < 900) {
-        return 7;
-    } else if (canvasHeight < 1100) {
-        return 9;
-    } else {
-        return 10;
-    }
-
-    // medium screen size
-
-    // large screen size
-};
-
 // function to ensure sizing of canvas is flexible
 const resizeCanvas = () => {
-    // Set width to 75% of the current viewport width
+    // Set width and height to 75% of the current viewport width /height
     canvas.width = window.innerWidth * 0.75;
-
-    // Optional: Set height proportionally, or as fixed value
     canvas.height = window.innerHeight * 0.75;
 };
 
-// function for updating HUD
+// function for updating HUD (Heads Up Display containing display of levels and blocks destroyed)
 const updateHUD = () => {
     levelDisplay.textContent = `Level: ${level}`; // Or your preferred level logic
     scoreDisplay.textContent = `Blocks Destroyed: ${blocksEliminated}`;
 };
 
-// function for checking two blocks aren't overlapping
-const isTooClose = (
-    firstBlock: Pair,
-    secondBlock: Pair,
-    width: number,
-    height: number
-): boolean => {
-    const dx = Math.abs(firstBlock[0] - secondBlock[0]);
-    const dy = Math.abs(firstBlock[1] - secondBlock[1]);
-    return dx < width && dy < height;
-};
-
-// func for generating random number in a given min max range
-const getRandomInRange = (min: number, max: number): number =>
-    Math.random() * (max - min) + min;
-
-// func for attempting to generate n non-overlapping blocks
-// at random positions on screen
-
-const generateFilteredRandomArray = (
-    //number of blocks to attempt to generate
-    n: number,
-    // canvas properties
-    canvasWidth: number,
-    canvasHeight: number,
-    // block properties
-    height: number,
-    width: number,
-    // number of times we try to generate set
-    // of blocks (to avoid potentially infinite loop)
-    maxAttempts = 1000000
-): Pair[] => {
-    const result: Pair[] = [];
-
-    let attempts = 0;
-    while (result.length < n && attempts < maxAttempts) {
-        // generate potential block coord
-        const candidate: Pair = [
-            getRandomInRange(width, canvasWidth - width),
-            getRandomInRange(0, 0.75 * canvasHeight),
-        ];
-
-        // check for overlap before pushing
-        const isValid = result.every(
-            (existing) => !isTooClose(candidate, existing, width, height)
-        );
-
-        if (isValid) {
-            result.push(candidate);
-        }
-
-        attempts++;
-    }
-    // check to see if fewer than n blocks made
-    if (result.length < n) {
-        throw new Error(
-            `Could not generate ${n} sufficiently distinct points after ${maxAttempts} attempts.`
-        );
-    }
-
-    return result;
-};
+// function for resetting game (after user won/lost round)
+// updates/resets paddle, ball, blocks etc in game
 
 const resetGame = () => {
-    //if(!ctx) return;
-    // function to reset paddle, ball, blocks etc
-
-    // check if previous round was won
+    // increase ball speed if previous round was won
     if (!gameOver) {
         ballSpeed += 2;
     }
-
-    // reset logic for game having been lost (in case it was)
+    // reset logic
     gameOver = false;
 
     // empty array of class instances
@@ -192,31 +105,19 @@ const resetGame = () => {
 };
 
 // func for activating end screen pop up
+// change message depending on if user wins/loses
 const showEndScreen = (message: string) => {
-    // change message depending on if user wins/loses
     endMessage.textContent = message;
     endScreen.classList.add("active");
 };
 
-const blockCentreDistance = (block1: Block, block2: Block): number => {
-    return Math.sqrt((block1.x - block2.x) ** 2 + (block1.y - block2.y) ** 2);
-};
-
-// const brickInExplosionRange = (
-//     blocks: Block[],
-//     explosiveBlock: Block
-// ): Block[] => {
-//     return blocks.filter(
-//         (block) =>
-//             blockCentreDistance(block, explosiveBlock) >
-//             explosiveBlock.width * 3
-//     );
-// };
+// main game loop for game
 
 const gameLoop = () => {
-    // wait for user to start game, or catch if game over
+    // wait for user to start game
     if (!gameStarted) return;
 
+    // clear canvas
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
     // draw paddle
@@ -226,9 +127,9 @@ const gameLoop = () => {
     // draw ball
     ball.draw(ctx);
 
-    // check for ball escaping - losing condition
+    // update position of ball
     gameOver = ball.update(paddle, canvas.height, canvas.width);
-
+    // check that ball has not escape (losing condition)
     if (gameOver) {
         showEndScreen("Game Over!");
         return;
@@ -236,10 +137,14 @@ const gameLoop = () => {
 
     // check for block being destroyed
     for (let i = blocks.length - 1; i >= 0; i--) {
+        // ball hitting block condition
         if (blocks[i].broken(ball)) {
+            // block being explosive
             if (blocks[i].explosive) {
                 const explosiveBlock = blocks[i];
-                // explosion animation
+
+                // add new explosion to array of explosions
+                // explosion coords == centre of explosive brick
                 explosions.push(
                     new Explosion(
                         explosiveBlock.x + explosiveBlock.width / 2,
@@ -250,84 +155,106 @@ const gameLoop = () => {
 
                 // find and remove exploded bricks (including explosive brick)
                 for (let j = blocks.length - 1; j >= 0; j--) {
+                    // distance from blocks to exploded block
                     const distance = blockCentreDistance(
                         blocks[j],
                         explosiveBlock
                     );
+                    // remove blocks 3 width away from explosive block
                     if (distance < explosiveBlock.width * 3) {
                         blocks.splice(j, 1);
                     }
                 }
 
+                // update count of blocks eliminated, and HUD
                 blocksEliminated = blocksGenerated - blocks.length;
                 updateHUD();
-                break; // Important! Prevent double mutation in this loop
+
+                // use break to avoid double mutation in this loop
+                break;
             } else {
-                blocks.splice(i, 1); // remove the block
+                // block not being explosive case - just remove the block
+                blocks.splice(i, 1);
+
+                // update count of blocks eliminated, and HUD
                 blocksEliminated = blocksGenerated - blocks.length;
                 updateHUD();
             }
         }
     }
-    // check for winning condition
+    // loop through array of explosions, displaying or removing explosions
+    for (let i = explosions.length - 1; i >= 0; i--) {
+        const active = explosions[i].update();
+        // remove explosion if inactive
+        if (!active) {
+            // remove finished explosion
+            explosions.splice(i, 1); // remove finished explosions
+        } else {
+            // draw active explision
+            explosions[i].draw(ctx);
+        }
+    }
 
+    // check for winning condition
     if (blocks.length === 0) {
+        // increase level and display message to user
         level += 1;
         showEndScreen(`You Win! New Level ${level} Unlocked!`);
         return;
     }
-    for (let i = explosions.length - 1; i >= 0; i--) {
-        const active = explosions[i].update();
-        if (!active) {
-            explosions.splice(i, 1); // remove finished explosions
-        } else {
-            explosions[i].draw(ctx);
-        }
-    }
+
     // draw remaining blocks
     for (const block of blocks) {
         block.draw(ctx);
     }
 
+    // call gameLoop again before next screen frame (ensures frame updates)
     requestAnimationFrame(gameLoop);
 };
 
 //// DOM manipulation (eventlisteners)
 
-// event listeners for starting and restarting game
-
+// check if user resizes window
 window.addEventListener("resize", resizeCanvas());
 
+// check if user clicks start game button
 startButton.addEventListener("click", () => {
     // remove active class from start button element
     // this will get rid of start button when game started
     startScreen.classList.remove("active");
-    // change bools accordingly, so we loop through game
+    // change game logic variables accordingly, so we loop through game
     gameStarted = true;
     gameOver = false;
+    // start loop through game
     gameLoop();
 });
-
+// check if user clicks restart game function
 restartButton.addEventListener("click", () => {
     // remove active class from restart button element
     // this will get rid of restart button when game restarted
     endScreen.classList.remove("active");
     // reset game before restarting loop
     resetGame();
+    // reset HUD
     updateHUD();
+    // start loop again
     gameLoop();
 });
 
 // padel keyboard control handlers
 // when key pressed down
 document.addEventListener("keydown", (e) => {
+    // check if key is arrow left/right or a/d
     if (e.key === "ArrowLeft" || e.key === "a") {
         paddle.moveLeft(true);
     } else if (e.key === "ArrowRight" || e.key === "d") {
         paddle.moveRight(true);
     }
-}); // when key released
+});
+
+// when key released
 document.addEventListener("keyup", (e) => {
+    // check if key is arrow left/right or a/d
     if (e.key === "ArrowLeft" || e.key === "a") {
         paddle.moveLeft(false);
     } else if (e.key === "ArrowRight" || e.key === "d") {
@@ -340,14 +267,16 @@ document.addEventListener("keyup", (e) => {
 // initial resizing
 resizeCanvas();
 
+// set initial ball speed, depending on canvas height
 ballSpeed = ballSpeedUpdater(canvas.height);
-// paddle
+
+// paddle initialisation
 const paddle = new Paddle(canvas.width, canvas.height, ballSpeed);
 
-// ball
+// ball initialisation
 const ball = new Ball(canvas.width, canvas.height, ballSpeed);
 
-// block
+// block initialisation
 // array of block positions
 const blockPositions = generateFilteredRandomArray(
     countBlocks,
@@ -361,8 +290,9 @@ if (!blockPositions) {
     throw new Error("No block positions");
 }
 
-// count number of blocks generated
+// count number of blocks generated (to check winning condition later on)
 const blocksGenerated = blockPositions.length;
+// start counting number of blocks eliminated
 let blocksEliminated = 0;
 
 // array of blocks

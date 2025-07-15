@@ -23,7 +23,9 @@ export class Paddle {
         this.speed = speed;
     }
 
+    // update position of paddle on screen
     public update(canvasWidth: number) {
+        // check moving logic, and paddle within canvas, and update accordingly
         if (this.movingRight && this.x + this.width < canvasWidth) {
             this.x += this.speed;
         } else if (this.movingLeft && this.x > 0) {
@@ -31,10 +33,13 @@ export class Paddle {
         }
     }
 
+    // draw paddle
     public draw(ctx: CanvasRenderingContext2D) {
-        ctx.fillStyle = "green";
+        ctx.fillStyle = "aquamarine";
         ctx.fillRect(this.x, this.y, this.width, this.height);
     }
+
+    //functions to update moving logic variables
 
     public moveLeft(on: boolean) {
         this.movingLeft = on;

@@ -4,7 +4,7 @@ body {
     font-family: "Orbitron", "Audiowide", sans-serif;
     text-shadow: 0 0 5px #0ff, 0 0 10px #0ff;
     display: flex;
-    flex-direction: column;
+    flex-direction: column; // stack elements vertically
     align-items: center;
     justify-content: center;
     height: 100vh;
@@ -61,32 +61,31 @@ canvas {
     color: white;
     font-family: "Orbitron", "Audiowide", sans-serif;
 
-    .legend-item {
+    .item {
         display: flex;
         align-items: center;
         gap: 0.5rem;
         font-size: 1rem;
 
-        .block-preview {
+        &__block {
             width: 20px;
             height: 20px;
             box-shadow: 0 0 10px white;
-        }
 
-        .block-3 {
-            background: #781ac4;
-        }
+            // colours for different block types
 
-        .block-2 {
-            background: #0bb9e1;
-        }
-
-        .block-1 {
-            background: #2dff52;
-        }
-
-        .block-explosive {
-            background: #ff5e3b;
+            &--3 {
+                background: #781ac4;
+            }
+            &--2 {
+                background: #0bb9e1;
+            }
+            &--1 {
+                background: #2dff52;
+            }
+            &--explosive {
+                background: #ff5e3b;
+            }
         }
     }
 }
@@ -104,15 +103,15 @@ canvas {
 
 .overlay {
     position: absolute;
-    // top: 0;
-    // left: 0;
+
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
     width: 75vw; // match canvas size
     height: auto;
     background-color: rgba(0, 0, 0, 0.8);
-    // color: turquoise;
+    color: white;
+    text-shadow: turquoise;
     display: none;
     justify-content: center;
     align-items: center;
@@ -121,7 +120,7 @@ canvas {
 
     // class whose presence decides whether screen is visible or not
     &.active {
-        display: flex;
+        display: flex; // makes overlay visible
     }
 
     button {

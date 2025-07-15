@@ -47,8 +47,8 @@ HTML
 
 SCSS
 
--   [ ] So far not compatible with mobile dimensions --> fix this
--   [ ] Nicer designs than just simple monochromatic blocks and circles
+-   [x] So far not compatible with mobile dimensions --> fix this
+-   [x] Nicer designs than just simple monochromatic blocks and circles
 
 TS
 
@@ -76,5 +76,9 @@ SCSS
 
 TS
 
--   [ ] Touchscreen?
--   [ ] Multiple Balls extension? (potentially)
+Final Stuff to do
+
+-   [ ] Comments
+-   [ ] README
+-   [ ] Sound Effects
+-   [ ] Messages to speed

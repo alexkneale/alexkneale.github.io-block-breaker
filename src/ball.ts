@@ -35,13 +35,18 @@ export class Ball {
         // set speed
         this.speed = speed;
         // random orientation
+        // restrain randomness to be within interesting range of angles (avoid angle close to horizontal/vertical)
         this.angle =
             Math.random() * (1 / 3 - 1 / 6) * Math.PI + (Math.PI * 1) / 6;
         // velocity in each direction
         this.vx = this.speed * Math.cos(this.angle);
+        // start negative vertical component, so that ball is not going straight down when game initiated (easier for user to start a game)
         this.vy = -this.speed * Math.sin(this.angle);
     }
-
+    // function to update position of ball and check for
+    // - collisions with walls
+    // - collisions with blocks
+    // returns boolean (whether or not ball has gone through bottom of screen: game over condition)
     public update(
         paddle: Paddle,
         canvasHeight: number,
@@ -90,6 +95,7 @@ export class Ball {
         return false;
     }
 
+    // function for drawing ball, colour red
     public draw(ctx: CanvasRenderingContext2D) {
         ctx.beginPath();
         ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
@@ -98,3 +104,17 @@ export class Ball {
         ctx.closePath();
     }
 }
+
+// function to determine ball speed depending on screen size
+// increasing screen size, increase ball speed to make game more lively
+export const ballSpeedUpdater = (canvasHeight: number): number => {
+    if (canvasHeight < 700) {
+        return 6;
+    } else if (canvasHeight < 900) {
+        return 7;
+    } else if (canvasHeight < 1100) {
+        return 9;
+    } else {
+        return 10;
+    }
+};
