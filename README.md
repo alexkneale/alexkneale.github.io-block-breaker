@@ -120,9 +120,12 @@ block-breaker/
 ├── src/
 │   ├── main.ts
 │   ├── ball.ts
+│   ├── ball-functions.ts
 │   ├── paddle.ts
 │   ├── block.ts
+│   ├── block-functions.ts
 │   ├── explosion.ts
+│   ├── explosion-functions.ts
 │   └── style.scss
 ├── index.html README.md
 ├── README.md

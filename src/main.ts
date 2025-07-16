@@ -2,14 +2,18 @@ import "./style.scss";
 
 // modules
 import { Paddle } from "./paddle";
-import { Ball, ballSpeedUpdater } from "./ball";
+import { Ball } from "./ball";
+import { ballSpeedUpdater } from "./ball-functions";
+
+import { Block } from "./block";
+
 import {
-    Block,
     isTooClose,
     generateFilteredRandomArray,
     getRandomInRange,
-} from "./block";
-import { Explosion, blockCentreDistance } from "./explosion";
+} from "./block-functions";
+import { Explosion } from "./explosion";
+import { blockCentreDistance } from "./explosion-functions";
 
 //// Global Variables
 
