@@ -215,7 +215,7 @@ const gameLoop = () => {
 //// DOM manipulation (eventlisteners)
 
 // check if user resizes window
-window.addEventListener("resize", resizeCanvas());
+window.addEventListener("resize", resizeCanvas);
 
 // check if user clicks start game button
 startButton.addEventListener("click", () => {

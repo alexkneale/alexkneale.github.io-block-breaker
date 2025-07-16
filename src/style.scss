@@ -1,3 +1,5 @@
+@use "devices";
+
 body {
     margin: 0;
     background-color: black;
@@ -27,8 +29,6 @@ body {
 
 canvas {
     display: block;
-    width: 75vw; /* 75% of the viewport width */
-    height: auto; /* maintains aspect ratio */
 
     border: 2px solid white;
     background-color: black;
@@ -89,7 +89,7 @@ canvas {
         }
     }
 }
-
+// for flicking effect around explosive block
 @keyframes flicker {
     from {
         background-color: #ffffff;
@@ -138,5 +138,46 @@ canvas {
     &__start--instructions {
         justify-content: center;
         text-align: center;
+    }
+}
+// small screen case, dealing with text of HUD and block legend overlapping
+@media screen and (max-width: devices.$medium) and (min-width: devices.$small) {
+    #block-legend {
+        gap: 1rem;
+
+        .item {
+            gap: 0.5rem;
+            font-size: 1rem;
+        }
+    }
+
+    #hud {
+        font-size: 1rem;
+        gap: 3rem;
+
+        div {
+            min-width: 50px;
+        }
+    }
+}
+// VERY small screen case, dealing with text of HUD and block legend overlapping
+
+@media screen and (max-width: devices.$xsmall) {
+    #block-legend {
+        gap: 0.75rem;
+
+        .item {
+            gap: 0.5rem;
+            font-size: 1rem;
+        }
+    }
+
+    #hud {
+        font-size: 1rem;
+        gap: 3rem;
+
+        div {
+            min-width: 50px;
+        }
     }
 }
