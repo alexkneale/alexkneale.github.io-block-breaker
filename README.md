@@ -6,17 +6,17 @@ A space-themed block breaker game built with **TypeScript**, **HTML5 Canvas**, a
 
 ## 📖 Table of Contents
 
--   [🎮 Game Overview](#-game-overview)
--   [⚙️ Features](#️-features)
--   [🧱 Block Types](#-block-types)
--   [💥 Explosive Mechanics](#-explosive-mechanics)
--   [📐 Collision Detection](#-collision-detection)
--   [☝️ Touch Screen](#-touch-screen)
--   [⚠️ Known Issue: Tunnelling Effect](#️-known-issue-tunnelling-effect)
--   [🔧 Future Improvements](#-future-improvements)
--   [🖥️ Running the Game](#️-running-the-game)
--   [📁 Project Structure](#-project-structure)
--   [📜 License](#-license)
+-   [🎮 Game Overview](#game-overview)
+-   [⚙️ Features](#️features)
+-   [🧱 Block Types](#block-types)
+-   [💥 Explosive Mechanics](#explosive-mechanics)
+-   [📐 Collision Detection](#collision-detection)
+-   [☝️ Touch Screen](#touch-screen)
+-   [⚠️ Known Issue: Tunnelling Effect](#️known-issue-tunnelling-effect)
+-   [🔧 Future Improvements](#future-improvements)
+-   [🖥️ Running the Game](#️running-the-game)
+-   [📁 Project Structure](#project-structure)
+-   [📜 License](#license)
 
 ---
 
@@ -32,10 +32,10 @@ The game includes a **heads-up display (HUD)** for level and score, a **popup-ba
 
 -   Responsive canvas resizing
 -   Keyboard paddle control (← → or A / D)
+-   Touch Screen functionality for mobile users
 -   Multiple levels with increasing speed
 -   Animated explosion mechanics
 -   Sound effects
--   Touch Screen implementation for mobile users
 -   Four block types with different durability
 -   Neon/space visual theme
 -   Restart functionality after game over or level win
@@ -103,7 +103,6 @@ This is marked as an area for **future improvement**.
 
 -   Add power-ups and multi-ball mechanics
 -   Adaptive difficulty based on performance
--   Improved mobile controls (e.g., touch input)
 -   Fix tunnelling via predictive collision detection
 
 ---
