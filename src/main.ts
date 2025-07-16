@@ -35,6 +35,10 @@ const restartButton = document.getElementById(
 const levelDisplay = document.getElementById("level-display")!;
 const scoreDisplay = document.getElementById("score-display")!;
 
+// explosion sound effect (block hitting sound effect handled within block class)
+const explosionSound = new Audio("sounds/explosion.mp3");
+explosionSound.volume = 0.6;
+
 // array to store explosions
 const explosions: Explosion[] = [];
 
@@ -141,6 +145,9 @@ const gameLoop = () => {
         if (blocks[i].broken(ball)) {
             // block being explosive
             if (blocks[i].explosive) {
+                explosionSound.currentTime = 0;
+                explosionSound.play();
+
                 const explosiveBlock = blocks[i];
 
                 // add new explosion to array of explosions

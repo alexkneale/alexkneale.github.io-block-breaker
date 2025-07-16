@@ -1,5 +1,9 @@
 import type { Ball } from "./ball";
 
+// hit sound to play when block is hit
+const hitSound = new Audio("sounds/block.mp3");
+hitSound.volume = 0.5;
+
 //// block class
 
 export class Block {
@@ -78,6 +82,9 @@ export class Block {
         // if ball has 'hit' block (within coords of block)
 
         if (withinBlockX && withinBlockY) {
+            // play sounds
+            hitSound.currentTime = 0;
+            hitSound.play();
             // determine overlap between 'sides' of ball (as described above)
             // and sides of block
             const overlapLeft = ballRight - blockLeft;
