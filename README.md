@@ -11,6 +11,7 @@ A space-themed block breaker game built with **TypeScript**, **HTML5 Canvas**, a
 -   [🧱 Block Types](#-block-types)
 -   [💥 Explosive Mechanics](#-explosive-mechanics)
 -   [📐 Collision Detection](#-collision-detection)
+-   [☝️ Touch Screen](#-touch-screen)
 -   [⚠️ Known Issue: Tunnelling Effect](#️-known-issue-tunnelling-effect)
 -   [🔧 Future Improvements](#-future-improvements)
 -   [🖥️ Running the Game](#️-running-the-game)
@@ -34,6 +35,7 @@ The game includes a **heads-up display (HUD)** for level and score, a **popup-ba
 -   Multiple levels with increasing speed
 -   Animated explosion mechanics
 -   Sound effects
+-   Touch Screen implementation for mobile users
 -   Four block types with different durability
 -   Neon/space visual theme
 -   Restart functionality after game over or level win
@@ -44,12 +46,12 @@ The game includes a **heads-up display (HUD)** for level and score, a **popup-ba
 
 There are four types of blocks, each with unique durability and visual style:
 
-| Hits Required | Shadow Color               | Description                          |
-| ------------- | -------------------------- | ------------------------------------ |
-| 1             | Cyan `#3B9C9C`             | Weak Block                           |
-| 2             | Purple `#8A2BE2`           | Medium Block                         |
-| 3             | Orange `#FF8C00`           | Strong Block                         |
-| 1 (Explosive) | White `#FFFFFF` (flashing) | Explosive Block with AoE destruction |
+| Hits Required | Shadow Color | Description                          |
+| ------------- | ------------ | ------------------------------------ |
+| 1             | Light Green  | Weak Block                           |
+| 2             | Light Blue   | Medium Block                         |
+| 3             | Purple       | Strong Block                         |
+| 1 (Explosive) | Fiery Orange | Explosive Block with AoE destruction |
 
 These are displayed at the bottom of the game in a **block library section** to help players identify them.
 
@@ -58,8 +60,6 @@ These are displayed at the bottom of the game in a **block library section** to 
 ## 💥 Explosive Mechanics
 
 When an **explosive block** is hit, all nearby blocks within a defined **blast radius** (3× the block width) are instantly destroyed. The explosion includes a visual animation centered on the explosive block, using a radial expansion effect.
-
-To preserve performance, explosion animation and block deletion are carefully timed in the game loop.
 
 ---
 
@@ -70,7 +70,16 @@ The game uses axis-aligned bounding box (AABB) logic with ball-edge checks to de
 -   **Top or bottom**: inverts vertical velocity (`vy`)
 -   **Left or right**: inverts horizontal velocity (`vx`)
 
-This makes gameplay physically consistent and visually intuitive.
+This makes gameplay physically consistent.
+
+---
+
+## ☝️ Touch Screen
+
+To allow mobile and tablet users to enjoy the game, basic touch screen functionality has been implemented. Instead of adding visible on-screen buttons, which can clutter the interface, the canvas itself responds to touch input:
+
+-   When the left side of the canvas is touched, the paddle moves left.
+-   When the right side is touched, the paddle moves right.
 
 ---
 
@@ -93,7 +102,6 @@ This is marked as an area for **future improvement**.
 ## 🔧 Future Improvements
 
 -   Add power-ups and multi-ball mechanics
--   Include sound effects and background music
 -   Adaptive difficulty based on performance
 -   Improved mobile controls (e.g., touch input)
 -   Fix tunnelling via predictive collision detection

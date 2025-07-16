@@ -71,6 +71,29 @@ const updateHUD = () => {
     scoreDisplay.textContent = `Blocks Destroyed: ${blocksEliminated}`;
 };
 
+// function for implementing touch screen movement of paddle
+// here we only consider single touch
+// first finger to touch screen is finger that decides movement of paddle
+// multitouch is not implemented
+function handleTouch(event: TouchEvent) {
+    // TouchEvent contains info about touch
+    // first touch on screen
+    const touch = event.touches[0];
+    // dimensions of canvas
+    const canvasRect = canvas.getBoundingClientRect();
+    // collecting x coord of touch (relative to canvas)
+    const touchX = touch.clientX - canvasRect.left;
+
+    // check if user touched left or right side of canvas
+    if (touchX < canvas.width / 2) {
+        paddle.moveLeft(true);
+        paddle.moveRight(false);
+    } else {
+        paddle.moveRight(true);
+        paddle.moveLeft(false);
+    }
+}
+
 // function for resetting game (after user won/lost round)
 // updates/resets paddle, ball, blocks etc in game
 
@@ -223,6 +246,16 @@ const gameLoop = () => {
 
 // check if user resizes window
 window.addEventListener("resize", resizeCanvas);
+
+// touch screen event listeners
+// start of touch detected on screen
+canvas.addEventListener("touchstart", handleTouch);
+canvas.addEventListener("touchmove", handleTouch);
+// end of touch detected on screen
+canvas.addEventListener("touchend", () => {
+    paddle.moveLeft(false);
+    paddle.moveRight(false);
+});
 
 // check if user clicks start game button
 startButton.addEventListener("click", () => {
