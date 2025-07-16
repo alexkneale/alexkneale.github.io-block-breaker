@@ -6,17 +6,17 @@ A space-themed block breaker game built with **TypeScript**, **HTML5 Canvas**, a
 
 ## 📖 Table of Contents
 
--   [🎮 Game Overview](#game-overview)
--   [⚙️ Features](#️features)
--   [🧱 Block Types](#block-types)
--   [💥 Explosive Mechanics](#explosive-mechanics)
--   [📐 Collision Detection](#collision-detection)
--   [☝️ Touch Screen](#touch-screen)
--   [⚠️ Known Issue: Tunnelling Effect](#️known-issue-tunnelling-effect)
--   [🔧 Future Improvements](#future-improvements)
--   [🖥️ Running the Game](#️running-the-game)
--   [📁 Project Structure](#project-structure)
--   [📜 License](#license)
+-   [🎮 Game Overview](#-game-overview)
+-   [⚙️ Features](#️-features)
+-   [🧱 Block Types](#-block-types)
+-   [💥 Explosive Mechanics](#-explosive-mechanics)
+-   [📐 Collision Detection](#-collision-detection)
+-   [☝️ Touch Screen](#-touch-screen)
+-   [⚠️ Known Issue: Tunnelling Effect](#️-known-issue-tunnelling-effect)
+-   [🔧 Future Improvements](#-future-improvements)
+-   [🖥️ Running the Game](#️-running-the-game)
+-   [📁 Project Structure](#-project-structure)
+-   [📜 License](#-license)
 
 ---
 
