@@ -33,6 +33,7 @@ The game includes a **heads-up display (HUD)** for level and score, a **popup-ba
 -   Keyboard paddle control (← → or A / D)
 -   Multiple levels with increasing speed
 -   Animated explosion mechanics
+-   Sound effects
 -   Four block types with different durability
 -   Neon/space visual theme
 -   Restart functionality after game over or level win
