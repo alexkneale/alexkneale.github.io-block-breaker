@@ -48,4 +48,18 @@ export class Paddle {
     public moveRight(on: boolean) {
         this.movingRight = on;
     }
+
+    // function to determine paddle speed depending on screen size
+    // increasing screen size, increase paddle speed to make game more lively
+    paddleSpeedUpdater = (canvasHeight: number): void => {
+        if (canvasHeight < 700) {
+            this.speed = 6;
+        } else if (canvasHeight < 900) {
+            this.speed = 7;
+        } else if (canvasHeight < 1100) {
+            this.speed = 9;
+        } else {
+            this.speed = 10;
+        }
+    };
 }

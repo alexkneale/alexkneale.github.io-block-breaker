@@ -32,7 +32,7 @@ export class Ball {
         this.x = canvasWidth / 2 - this.radius;
         // place ball 100 pixels above bottom
         this.y = 0.1 * canvasHeight;
-        // set speed
+        // set initial speed
         this.speed = speed;
         // random orientation
         // restrain randomness to be within interesting range of angles (avoid angle close to horizontal/vertical)
@@ -103,4 +103,18 @@ export class Ball {
         ctx.fill();
         ctx.closePath();
     }
+
+    // function to determine ball speed depending on screen size
+    // increasing screen size, increase ball speed to make game more lively
+    ballSpeedUpdater = (canvasHeight: number): void => {
+        if (canvasHeight < 700) {
+            this.speed = 6;
+        } else if (canvasHeight < 900) {
+            this.speed = 7;
+        } else if (canvasHeight < 1100) {
+            this.speed = 9;
+        } else {
+            this.speed = 10;
+        }
+    };
 }
